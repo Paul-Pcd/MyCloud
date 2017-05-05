@@ -1,0 +1,61 @@
+{% extends "base/base.html" %}
+{% from "macros/_form.html" import render_form %}
+
+{% block body %}
+<script>
+$(function () { 
+	$("[data-toggle='popover']").popover();
+});
+</script>
+<table class="table table-bordered table-striped table-hover">
+    <thead>
+        <tr>
+            <th id="custom">Id</th>
+            <th id="custom">IP : Port</th>
+            <th id="custom">Userame</th>
+            <th id="custom">Password</th>
+            <th id="custom">Status</th>
+            <th id="custom">Edit</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for i in host_list%}
+        <tr>
+            <td id="custom">{{ i.id }}</td>
+            <td id="custom">{{ i.ip }} : {{ i.port }}&nbsp;
+                <div id="custom" class="hover-enabled btn-group">
+                    <button type="button" class="btn" style='background-color:transparent;border:none' title="Virtual machines" data-container="body" data-toggle="popover" data-placement="bottom" data-content="{{ i.vm_list }}">
+                        <i class='iconfont icon-xuniji'></i>
+                    </button>
+                </div>
+            </td>
+            <td id="custom">{{ i.username }}</td>
+            <td id="custom">{{ i.password }}</td>
+            <td id="custom">{{ i.status_code }}</td>
+            <td id="custom">
+                <div id="custom" class="hover-enabled btn-group">
+                    <button type="button" style='background-color:transparent;border:none' data-toggle="dropdown" ><i class='iconfont icon-shezhi'></i></button>
+                    <ul class="dropdown-menu animated" data-animation="flipInX" role="menu">
+                        <li><a href="{{ url_for('host.delete', host_id = i.id )}}"><i class='iconfont icon-shanchu'>&nbsp&nbspDelete </i></a></li>
+                    </ul>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Add Host</h4>
+            </div>
+            <div class="modal-body">
+                {{render_form(url_for('host.index'), form)}}
+            </div>
+        </div>
+    </div>
+</div>
+<div style="float:right" class="btn btn-primary" data-toggle="modal" data-target="#myModal"><i class='iconfont icon-tianjia'>&nbsp&nbspAdd </i></div>
+{% endblock %}

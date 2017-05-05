@@ -1,0 +1,55 @@
+{% extends "base/base.html" %}
+{% from "macros/_form.html" import render_form %}
+{% block body %}
+<table class="table table-bordered table-striped table-hover">
+    <thead>
+        <tr>
+            <th id="custom">Id</th>
+            <th id="custom">Name</th>
+            <th id="custom">E-mail</th>
+            <th id="custom">Description</th>
+            <th id="custom">User type</th>
+            <th id="custom">Is login</th>
+            <th id="custom">Edit</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for i in users %}
+        <tr>
+            <td id="custom">{{ i.id }}</td>
+            <td id="custom">{{ i.username }}</td>
+            <td id="custom">{{ i.email }}</td>
+            <td id="custom">{{ i.description }}</td>
+            <td id="custom">{{ i.type_code }}</td>
+            <td id="custom">{{ i.islogin }}</td>
+            <td id="custom">
+                {% if i.type_code != 0 %}
+                <div id="custom" class="hover-enabled btn-group">
+                    <button type="button" style='background-color:transparent;border:none' data-toggle="dropdown">
+                        <i class='iconfont icon-shezhi'></i>
+                    </button>
+                    <ul class="dropdown-menu animated" data-animation="flipInX" role="menu">
+                        <li><a href="{{ url_for('user.delete', user_id = i.id )}}"><i class='iconfont icon-shanchu'>&nbsp&nbspDelete </i></a></li>
+                    </ul>
+                </div>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type = "button" class = "close" data-dismiss = "modal" aria-label = "Close"><span aria-hidden = "true">&times;</span></button>
+                <h4 class="modal-title">Add User</h4>
+            </div>
+            <div class="modal-body">
+                {{render_form(url_for('user.add'), form)}}
+            </div>
+        </div>
+    </div>
+</div>
+<div style="float:right" class="btn btn-primary" data-toggle="modal" data-target="#myModal"><i class='iconfont icon-tianjia'>&nbsp&nbspAdd </i></div>
+{% endblock %}

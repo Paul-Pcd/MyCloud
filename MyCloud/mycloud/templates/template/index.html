@@ -1,0 +1,82 @@
+{% extends "base/base.html" %}
+{% from "macros/_form.html" import render_form %}
+{% block body %}
+
+<table class="table table-bordered table-striped table-hover">
+    <thead>
+        <tr>
+            <th id="custom">Id</th>
+            <th id="custom">Template name</th>
+            <th id="custom">CPU</th>
+            <th id="custom">Memory / (MB)</th>
+            <th id="custom">Disk / (MB)</th>
+            <th id="custom">Image_id</th>
+            <th id="custom">Status</th>
+            {% if current_user.is_admin() %}
+            <th id="custom">Edit</th>
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for i in template_list%}
+
+        <div class="modal fade" id="modify">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Modify Template</h4>
+                    </div>
+                    <div class="modal-body">
+                        {{render_form(url_for('template.modify', template_id = i.id), form)}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <tr>
+            <td id="custom">{{ i.id }}</td>
+            <td id="custom">{{ i.template_name }}</td>
+            <td id="custom">{{ i.cpu }}</td>
+            <td id="custom">{{ i.memory }}</td>
+            <td id="custom">{{ i.disk }}</td>
+            <td id="custom">{{ i.image_id }}</td>
+            <td id="custom">{{ i.status_code }}</td>
+            {% if current_user.is_admin() %}
+            <td id="custom">
+                <div id="custom" class="hover-enabled btn-group">
+                    <button type="button" style='background-color:transparent;border:none' data-toggle="dropdown">
+                        <i class='iconfont icon-shezhi'></i>
+                    </button>
+                    <ul class="dropdown-menu animated" data-animation="flipInX" role="menu">
+                        </li>
+                            <div style="cursor:pointer; margin-left:18px; margin-top:4px" data-toggle="modal" data-target="#modify">
+                                <a style="color:black; text-decoration:none"><i class='iconfont icon-modify'>&nbsp&nbspModify </i></a>
+                            </div>
+                        </li>
+                        <li class="divider"></li>
+                        <li><a href="{{ url_for('template.delete', template_id = i.id )}}"><i class='iconfont icon-shanchu'>&nbsp&nbspDelete </i></a></li>
+                    </ul>
+                </div>
+            </td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Add Template</h4>
+            </div>
+            <div class="modal-body">
+                {{render_form(url_for('template.index'), form)}}
+            </div>
+        </div>
+    </div>
+</div>
+{% if current_user.is_admin() %}
+<div style="float:right" class="btn btn-primary" data-toggle="modal" data-target="#myModal"><i class='iconfont icon-tianjia'>&nbsp&nbspAdd </i></div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends "base/base.html" %}
+{% from "macros/_form.html" import render_form %}
+{% block body %}
+<table class="table table-bordered table-striped table-hover">
+    <thead>
+        <tr>
+            <th id="custom">Id</th>
+            <th id="custom">VM name</th>
+            <th id="custom">Host ip</th>
+            <th id="custom">Template id</th>
+            <th id="custom">User id</th>
+            <th id="custom">Create time</th>
+            <th id="custom">Status</th>
+            <th id="custom">Edit</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for i in vm_list%}
+        {% if i.user_id == current_user.id %}
+        <tr>
+            <td id="custom">{{ i.id }}</td>
+            <td id="custom">{{ i.vm_name }}</td>
+            <td id="custom">{{ i.host_ip }} / 24</td>
+            <td id="custom">{{ i.template_id }}</td>
+            <td id="custom">{{ i.user_id }}</td>
+            <td id="custom">{{ i.create_time }}</td>
+            <td id="custom">{{ i.status }}</td>
+            <td id="custom">
+                <div id="custom" class="hover-enabled btn-group">
+	            <button type="button" style='background-color:transparent;border:none' data-toggle="dropdown">
+                        <i class='iconfont icon-shezhi'></i>
+	            </button>
+	                <ul class="dropdown-menu animated" data-animation="flipInX" role="menu">
+		        <li><a target="_blank" href="http://{{ i.host_ip }}:6080/vnc.html"><i class='iconfont icon-xianshi1'>&nbsp&nbsp GUI </i></a></li>
+                        <!--{{ i.vnc_port  }}-->
+                        <li class="divider"></li>
+		        <li><a href="{{ url_for('vm.launch', vm_id = i.id )}}"><i class='iconfont icon-bofangqibofang'>&nbsp&nbsp Launch </i></a></li>
+                        <li><a href="{{ url_for('vm.shutdown', vm_id = i.id )}}"><i class='iconfont icon-guanbi'>&nbsp&nbsp Shutdown </i></a></li>
+                        <li class="divider"></li>
+		        <li><a href="{{ url_for('vm.suspend', vm_id = i.id )}}"><i class='iconfont icon-zanting'>&nbsp&nbsp Suspend </i></a></li>
+		        <li><a href="{{ url_for('vm.resume', vm_id = i.id )}}"><i class='iconfont icon-huifu'>&nbsp&nbsp Resume </i></a></li>
+
+		        <li class="divider"></li>
+                        <li><a href="{{ url_for('vm.delete', vm_id = i.id )}}"><i class='iconfont icon-shanchu'>&nbsp&nbsp Delete </i></a></li>
+	            </ul>
+                </div>
+            </td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+    </tbody>
+</table>
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Add VM</h4>
+            </div>
+            <div class="modal-body">
+                {{render_form(url_for('vm.index'), form)}}
+            </div>
+        </div>
+    </div>
+</div>
+<div style="float:right" class="btn btn-primary" data-toggle="modal" data-target="#myModal"><i class='iconfont icon-tianjia'>&nbsp&nbspAdd </i></div>
+{% if current_user.is_admin() %}
+    <div style="float:right; margin-right:5px"><button type="button" class="btn btn-default"><a style="text-decoration:none" href="{{ url_for('vm.discover')}}"><i class='iconfont icon-tianjia'>&nbsp&nbspDiscover </i></a></button></div>
+{% endif %}
+{% endblock %}

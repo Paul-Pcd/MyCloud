@@ -1,0 +1,4 @@
+安装libvirt-bin python-libvirt qemu
+和主服务器一样创建相同的目录结构
+配置nfs，挂载共享存储的images和disks目录
+配置ssh免登陆
