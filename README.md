@@ -1,8 +1,7 @@
 # MyCloud
- 
- 基于Flask框架的云计算管理平台，其中虚拟化管理接口使用libvirt，图形界面使用NoVNC（开源的VNC客户端）。
- 
- 
+基于Flask框架的云计算管理平台，其中虚拟化管理接口使用libvirt，图形界面使用[NoVNC](https://github.com/novnc/noVNC)。     
+其中结合系统[监控运维工具](https://github.com/yipwinghong/Controller)目标实现整体架构如下：
+![SystemArchitecture](http://ooaovpott.bkt.clouddn.com/SystemArchitecture.jpg)
  
  
 ## 开发环境
